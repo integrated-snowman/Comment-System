@@ -1,0 +1,28 @@
+name: Build site with Airtable data
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch Airtable data using secret
+        env:
+          AIRTABLE_PAT: ${{ secrets.AIRTABLE_PAT }}
+          AIRTABLE_BASE: appXXXXXXXXXXXXXX  # replace with your base ID
+        run: |
+          mkdir -p public
+          curl -s -H "Authorization: Bearer $AIRTABLE_PAT" \
+            "https://api.airtable.com/v0/$AIRTABLE_BASE/Table%201" \
+            -o public/data.json
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
