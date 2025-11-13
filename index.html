@@ -5,40 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Airtable Site</title>
   <style>
-    body {
-      font-family: sans-serif;
-      margin: 2rem;
-      background: #f8f9fa;
-    }
-    pre {
-      background: #fff;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      overflow-x: auto;
-    }
+    body { font-family: sans-serif; margin: 2rem; background: #f8f9fa; }
+    pre { background: #fff; padding: 1rem; border: 1px solid #ccc; border-radius: 6px; overflow-x: auto; }
   </style>
 </head>
 <body>
   <h1>📋 Airtable Data Viewer</h1>
-  <p>This site is hosted on GitHub Pages.</p>
   <p id="status">Loading data...</p>
   <pre id="data"></pre>
 
   <script>
-    // This example expects a data.json file (e.g., created by your GitHub Action)
     fetch('./data.json')
-      .then(response => {
-        if (!response.ok) throw new Error('No data.json found.');
-        return response.json();
+      .then(r => {
+        if (!r.ok) throw new Error('No data.json found.');
+        return r.json();
       })
       .then(data => {
         document.getElementById('status').textContent = 'Data loaded!';
         document.getElementById('data').textContent = JSON.stringify(data, null, 2);
       })
-      .catch(error => {
-        document.getElementById('status').textContent =
-          'Could not load data (yet).';
+      .catch(err => {
+        document.getElementById('status').textContent = 'Data not available yet.';
       });
   </script>
 </body>
