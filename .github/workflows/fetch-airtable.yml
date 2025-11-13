@@ -14,9 +14,9 @@ jobs:
 
       - name: Fetch Airtable Data
         env:
-          AIRTABLE_PAT: ${{ secrets.AIRTABLE_PAT }}
-          AIRTABLE_BASE: appXXXXXXXXXXXXXX   # replace with your base ID
-          AIRTABLE_TABLE: "Table 1"          # replace with your table name
+          AIRTABLE_PAT: ${{ secrets.REPO_SECRET }}
+          AIRTABLE_BASE: appOHRbYTG0mWEn5U   # replace with your base ID
+          AIRTABLE_TABLE: "Comment System (github public)"          # replace with your table name
         run: |
           mkdir -p public
           echo "Fetching Airtable data..."
