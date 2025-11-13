@@ -1,24 +1,27 @@
-name: Build site with Airtable data
+name: Fetch Airtable Data and Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]  # runs when you push to main
+  workflow_dispatch:    # also allows manual run from Actions tab
 
 jobs:
-  build:
+  fetch-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch Airtable data using secret
+      - name: Fetch Airtable Data
         env:
           AIRTABLE_PAT: ${{ secrets.AIRTABLE_PAT }}
-          AIRTABLE_BASE: appXXXXXXXXXXXXXX  # replace with your base ID
+          AIRTABLE_BASE: appXXXXXXXXXXXXXX   # replace with your base ID
+          AIRTABLE_TABLE: "Table 1"          # replace with your table name
         run: |
           mkdir -p public
+          echo "Fetching Airtable data..."
           curl -s -H "Authorization: Bearer $AIRTABLE_PAT" \
-            "https://api.airtable.com/v0/$AIRTABLE_BASE/Table%201" \
+            "https://api.airtable.com/v0/$AIRTABLE_BASE/$AIRTABLE_TABLE" \
             -o public/data.json
 
       - name: Deploy to GitHub Pages
@@ -26,3 +29,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+
